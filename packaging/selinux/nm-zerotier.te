@@ -1,0 +1,28 @@
+# SELinux policy module for the NetworkManager ZeroTier VPN plugin.
+#
+# Why this exists: NetworkManager spawns the VPN plugin service directly,
+# so nm-zerotier-service (and the zerotier-cli subprocesses it runs) inherit
+# the NetworkManager_t domain. zerotier-cli needs to read files in
+# /var/lib/zerotier-one (the local control port file, and in some versions
+# authtoken.secret), which is labeled var_lib_t and not readable by
+# NetworkManager_t.
+#
+# This module gives ZeroTier's state directory a private type and grants
+# NetworkManager_t narrow read access to it. The zerotier-one daemon itself
+# runs unconfined (upstream ships no policy), so it is unaffected by the
+# relabel.
+
+policy_module(nm-zerotier, 1.0.0)
+
+# NetworkManager_t is defined by the distribution's networkmanager policy
+# module, not by the base policy; require it explicitly.
+require {
+    type NetworkManager_t;
+}
+
+type zerotier_var_lib_t;
+files_type(zerotier_var_lib_t)
+
+# Read access for the VPN plugin service and its zerotier-cli children.
+allow NetworkManager_t zerotier_var_lib_t:dir { getattr open search };
+allow NetworkManager_t zerotier_var_lib_t:file { getattr open read };

@@ -1,0 +1,1 @@
+/var/lib/zerotier-one(/.*)?    gen_context(system_u:object_r:zerotier_var_lib_t,s0)
