@@ -79,6 +79,8 @@ make -C packaging/selinux
 
 %install
 %meson_install
+install -Dpm 644 packaging/90-nm-zerotier.preset \
+    %{buildroot}%{_presetdir}/90-nm-zerotier.preset
 install -Dpm 644 packaging/selinux/nm-zerotier.pp \
     %{buildroot}%{_datadir}/selinux/packages/nm-zerotier.pp
 
@@ -91,6 +93,7 @@ install -Dpm 644 packaging/selinux/nm-zerotier.pp \
 %{_datadir}/dbus-1/system.d/nm-zerotier-service.conf
 %{_datadir}/dbus-1/system.d/nm-zerotier-status.conf
 %{_unitdir}/nm-zerotier-reconciled.service
+%{_presetdir}/90-nm-zerotier.preset
 %{_datadir}/selinux/packages/nm-zerotier.pp
 
 %post

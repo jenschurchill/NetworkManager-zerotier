@@ -1,0 +1,2 @@
+# Enable the reconciler by default so NetworkManager and zerotier-one stay in sync
+enable nm-zerotier-reconciled.service
